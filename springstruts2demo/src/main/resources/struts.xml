@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+    <package name="json-default" extends="struts-default">
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+        <interceptors>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+    </package>
+
+    <package name="user" namespace="/" extends="struts-default">
+        <action name="helloworld" class="com.struts2.action.HelloWorldAction" method="message">
+            <result name="SUCCESS">/helloworld.jsp</result>
+        </action>
+        <action name="page" class="com.struts2.action.JsonAction" method="getPage">
+            <result name="SUCCESS">/json_demo.jsp</result>
+        </action>
+    </package>
+    <package name="simpleton" namespace="/" extends="struts-default,json-default" >
+        <action name="getJson" class="com.struts2.action.JsonAction" method="excuteAjax">
+            <result name="fail"></result>
+            <!-- 返回json类型数据 -->
+            <result name="SUCCESS" type="json">
+                <param name="root">result<!-- result是action中设置的变量名，也是页面需要返回的数据，该变量必须有setter和getter方法 --></param>
+            </result>
+        </action>
+
+    </package>
+
+</struts>
